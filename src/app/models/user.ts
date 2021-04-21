@@ -1,7 +1,20 @@
 export interface User {
   id: string;
-  firstName: string;
-  lastName: string;
   email: string;
-  password: string | null;
+  username: string;
+  password: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  age?: number | null;
+  token: string;
+}
+
+export interface UserFormValues {
+  id: string;
+  email: string;
+  username: string;
+  password: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  age?: number | null;
 }
