@@ -3,10 +3,7 @@ import { Button, Form } from "react-bootstrap";
 
 const LoginForm = () => {
   return (
-    <div
-      className="d-flex flex-column justify-content-center align-items-center"
-      style={{ minHeight: "100vh" }}
-    >
+    <div className="d-flex flex-column justify-content-center align-items-center mt-5">
       <h1 className="text-center mb- mb-5">
         <span className="text-primary">L</span>og&nbsp;
         <span className="text-primary">I</span>n

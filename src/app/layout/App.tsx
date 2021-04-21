@@ -4,11 +4,13 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomePage from "../../features/home/HomePage";
 import LoginForm from "../../features/users/LoginForm";
 import RegisterForm from "../../features/users/RegisterForm";
+import NavBar from "./NavBar";
+import "../../style/App.css";
 
 function App() {
   return (
     <Router>
-      {/* place navbar here*/}
+      <NavBar />
       <Container fluid>
         <Switch>
           <Route exact path="/" component={HomePage} />
