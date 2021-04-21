@@ -3,7 +3,7 @@
 import React from "react";
 
 const TodoDashboard = () => {
-  return <div></div>;
+  return <div>Todos</div>;
 };
 
 export default TodoDashboard;

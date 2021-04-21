@@ -72,7 +72,7 @@ const requests = {
 };
 
 const Account = {
-  current: (id: string) => requests.getById<User>("/account", id),
+  current: (id: string) => requests.getById<User>("/users", id),
   login: (user: UserFormValues) => requests.post<User>("/login", user),
   register: (user: UserFormValues) => requests.post<User>("/register", user),
 };

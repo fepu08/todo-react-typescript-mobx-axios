@@ -1,8 +1,11 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import { useStore } from "../stores/store";
 
 const NavBar = () => {
+  const { userStore, commonStore } = useStore();
   return (
     <Navbar id="navbar" bg="dark" variant="dark" expand="lg">
       <Navbar.Brand href="#home">
@@ -18,12 +21,18 @@ const NavBar = () => {
             </Nav.Link>
           </div>
           <div className="d-lg-flex">
-            <Nav.Link as={NavLink} to="/login" exact>
-              Login
-            </Nav.Link>
-            <Nav.Link as={NavLink} to="/register" exact>
-              Register
-            </Nav.Link>
+            {commonStore.token ? (
+              <Nav.Link onClick={userStore.logout}>Logout</Nav.Link>
+            ) : (
+              <>
+                <Nav.Link as={NavLink} to="/login" exact>
+                  Login
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/register" exact>
+                  Register
+                </Nav.Link>
+              </>
+            )}
           </div>
         </Nav>
       </Navbar.Collapse>
@@ -31,4 +40,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default observer(NavBar);

@@ -3,6 +3,8 @@ import { history } from "../..";
 import agent from "../api/agent";
 import { User, UserFormValues } from "../models/user";
 import { store } from "./store";
+import jwt from "jwt-decode";
+import { Token } from "../models/token";
 
 export default class UserStore {
   user: User | null = null;
@@ -17,8 +19,9 @@ export default class UserStore {
 
   login = async (creds: UserFormValues) => {
     try {
-      const user = await agent.Account.login(creds);
-      store.commonStore.setToken(user.token);
+      const res = await agent.Account.login(creds);
+      store.commonStore.setToken(res.accessToken!);
+      const user = await this.getUserFromToken(res.accessToken!);
       runInAction(() => (this.user = user));
       history.push("/todos");
     } catch (err) {
@@ -33,21 +36,25 @@ export default class UserStore {
     history.push("/");
   };
 
-  getUser = async (id: string) => {
+  register = async (creds: UserFormValues) => {
     try {
-      const user = await agent.Account.current(id);
+      const res = await agent.Account.register(creds);
+      const token = res.accessToken;
+      const user = await this.getUserFromToken(token!);
+      store.commonStore.setToken(token!);
       runInAction(() => (this.user = user));
+      history.push("/todos");
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   };
 
-  register = async (creds: UserFormValues) => {
+  getUserFromToken = async (token: string) => {
+    const decodedToken: Token = jwt(token!);
+    const userId = decodedToken.sub;
     try {
-      const user = await agent.Account.register(creds);
-      store.commonStore.setToken(user.token);
-      runInAction(() => (this.user = user));
-      history.push("/activities");
+      const user = await agent.Account.current(userId);
+      return user;
     } catch (err) {
       throw err;
     }
