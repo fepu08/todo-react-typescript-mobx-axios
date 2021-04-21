@@ -8,3 +8,8 @@ body,
 .base-container {
   height: 100%;
 }
+
+.form-group.required .form-label:after {
+  content: "*";
+  color: red;
+}

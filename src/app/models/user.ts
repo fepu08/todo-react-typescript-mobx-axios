@@ -6,13 +6,14 @@ export interface User {
   firstName?: string | null;
   lastName?: string | null;
   age?: number | null;
-  token: string;
+  accessToken?: string;
 }
 
 export interface UserFormValues {
   email: string;
   username?: string;
   password: string;
+  passwordConfirm?: string;
   firstName?: string | null;
   lastName?: string | null;
   age?: number | null;
