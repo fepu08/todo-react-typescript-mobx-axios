@@ -10,9 +10,8 @@ export interface User {
 }
 
 export interface UserFormValues {
-  id: string;
   email: string;
-  username: string;
+  username?: string;
   password: string;
   firstName?: string | null;
   lastName?: string | null;

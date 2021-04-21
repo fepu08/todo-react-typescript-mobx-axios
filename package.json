@@ -53,5 +53,6 @@
     "@types/react-router-dom": "^5.1.7",
     "json-server": "^0.16.3",
     "json-server-auth": "^2.0.2"
-  }
+  },
+  "proxy": "http://localhost:5000"
 }
