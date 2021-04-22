@@ -8,6 +8,7 @@ import NavBar from "./NavBar";
 import "../../style/App.css";
 import TodoDashboard from "../../features/todos/dashboard/TodoDashboard";
 import { useStore } from "../stores/store";
+import PrivateRoute from "../layout/PrivateRoute";
 
 function App() {
   const { commonStore, userStore } = useStore();
@@ -32,7 +33,7 @@ function App() {
           <Route exact path="/" component={HomePage} />
           <Route exact path="/register" component={RegisterForm} />
           <Route exact path="/login" component={LoginForm} />
-          <Route exact path="/todos" component={TodoDashboard} />
+          <PrivateRoute exact path="/todos" component={TodoDashboard} />
         </Switch>
       </Container>
     </Fragment>
