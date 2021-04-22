@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { history } from "../..";
 import agent from "../api/agent";
 import { User, UserFormValues } from "../models/user";
@@ -11,6 +11,13 @@ export default class UserStore {
 
   constructor() {
     makeAutoObservable(this);
+    reaction(
+      () => this.user,
+      () => {
+        if (this.user) store.todoStore.loadTodos(this.user.id);
+        else store.todoStore.setTodos();
+      }
+    );
   }
 
   get isLoggedIn() {

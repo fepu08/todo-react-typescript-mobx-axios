@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { history } from "../..";
 import { User, UserFormValues } from "../models/user";
+import { Todo } from "../models/todo";
 import { store } from "../stores/store";
 
 const sleep = (delay: number) => {
@@ -77,8 +78,17 @@ const Account = {
   register: (user: UserFormValues) => requests.post<User>("/register", user),
 };
 
+const Todos = {
+  get: () => requests.get<Todo>("/todos"),
+  getByUser: (userId: string) =>
+    requests.get<Todo[]>(`/todos?user_id=${userId}`),
+  edit: (todo: Todo) => requests.put<Todo>(`/todos/${todo.id}`, todo),
+  delete: (id: string) => requests.delete<Todo>(`/todos/${id}`),
+};
+
 const agent = {
   Account,
+  Todos,
 };
 
 export default agent;
