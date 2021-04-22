@@ -1,4 +1,4 @@
-import { makeAutoObservable, reaction, runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { history } from "../..";
 import agent from "../api/agent";
 import { User, UserFormValues } from "../models/user";
@@ -11,13 +11,6 @@ export default class UserStore {
 
   constructor() {
     makeAutoObservable(this);
-    reaction(
-      () => this.user,
-      () => {
-        if (this.user) store.todoStore.loadTodos(this.user.id);
-        else store.todoStore.setTodos();
-      }
-    );
   }
 
   get isLoggedIn() {
@@ -56,6 +49,16 @@ export default class UserStore {
     }
   };
 
+  getUser = async () => {
+    if (store.commonStore.token)
+      try {
+        return await this.getUserFromToken(store.commonStore.token);
+      } catch (err) {
+        throw err;
+      }
+    else return null;
+  };
+
   getUserFromToken = async (token: string) => {
     const decodedToken: Token = jwt(token!);
     const userId = decodedToken.sub;
@@ -70,7 +73,7 @@ export default class UserStore {
   setUserWithToken = async (token: string) => {
     try {
       const user = await this.getUserFromToken(token);
-      runInAction(() => (user ? (this.user = user) : (this.user = null)));
+      runInAction(() => (this.user = user));
     } catch (err) {
       throw err;
     }

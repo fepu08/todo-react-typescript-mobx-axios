@@ -36,6 +36,7 @@ const LoginForm = () => {
               value={user.email}
               placeholder="Enter email"
               onChange={handleChange}
+              autoComplete="off"
               required
             />
           </Form.Group>
@@ -48,6 +49,7 @@ const LoginForm = () => {
               value={user.password}
               placeholder="Password"
               onChange={handleChange}
+              autoComplete="off"
               required
             />
           </Form.Group>

@@ -12,13 +12,13 @@ interface Props extends RouteProps {
 const PrivateRoute = ({ component: Component, ...rest }: Props) => {
   const {
     userStore: { isLoggedIn },
-    commonStore: { token, isTokenExpired },
+    commonStore: { isTokenExpired },
   } = useStore();
   return (
     <Route
       {...rest}
       render={(props) =>
-        isLoggedIn || !token || isTokenExpired ? (
+        isLoggedIn && isTokenExpired ? (
           <Component {...props} />
         ) : (
           <Redirect to="/login" />

@@ -20,7 +20,7 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use(
   async (response) => {
     // set sleep for testing
-    //await sleep(1000);
+    await sleep(1000);
     return response;
   },
   (error: AxiosError) => {
@@ -73,13 +73,7 @@ const requests = {
 };
 
 const Account = {
-  current: () => {
-    const user = store.userStore.user;
-    let param;
-    if (user) param = user.id;
-    else param = "0";
-    requests.getById<User>("/account", param);
-  },
+  current: (id: string) => requests.getById<User>("/users", id),
   login: (user: UserFormValues) => requests.post<User>("/login", user),
   register: (user: UserFormValues) => requests.post<User>("/register", user),
 };
