@@ -66,4 +66,13 @@ export default class UserStore {
       throw err;
     }
   };
+
+  setUserWithToken = async (token: string) => {
+    try {
+      const user = await this.getUserFromToken(token);
+      runInAction(() => (user ? (this.user = user) : (this.user = null)));
+    } catch (err) {
+      throw err;
+    }
+  };
 }
