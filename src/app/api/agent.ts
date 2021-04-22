@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { history } from "../..";
 import { User, UserFormValues } from "../models/user";
-import { Todo } from "../models/todo";
+import { Todo, TodoFormValues } from "../models/todo";
 import { store } from "../stores/store";
 
 const sleep = (delay: number) => {
@@ -73,7 +73,13 @@ const requests = {
 };
 
 const Account = {
-  current: (id: string) => requests.getById<User>("/users", id),
+  current: () => {
+    const user = store.userStore.user;
+    let param;
+    if (user) param = user.id;
+    else param = "0";
+    requests.getById<User>("/account", param);
+  },
   login: (user: UserFormValues) => requests.post<User>("/login", user),
   register: (user: UserFormValues) => requests.post<User>("/register", user),
 };
@@ -82,6 +88,7 @@ const Todos = {
   get: () => requests.get<Todo>("/todos"),
   getByUser: (userId: string) =>
     requests.get<Todo[]>(`/todos?user_id=${userId}`),
+  create: (todo: TodoFormValues) => requests.post("/todos", todo),
   edit: (todo: Todo) => requests.put<Todo>(`/todos/${todo.id}`, todo),
   delete: (id: string) => requests.delete<Todo>(`/todos/${id}`),
 };

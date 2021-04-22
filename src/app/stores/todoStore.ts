@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { Todo } from "../models/todo";
+import { Todo, TodoFormValues } from "../models/todo";
 import { store } from "./store";
 
 export default class TodoStore {
@@ -38,4 +38,12 @@ export default class TodoStore {
   setLoadingInitial(state: boolean) {
     this.loadingInitial = state;
   }
+
+  addTodo = async (todo: TodoFormValues) => {
+    try {
+      await agent.Todos.create(todo);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
