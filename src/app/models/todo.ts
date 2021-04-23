@@ -1,24 +1,29 @@
 export interface Todo {
-  id: string;
-  user_id: string;
+  id: number;
+  userId: number;
   title: string;
-  created_at: Date | string;
-  done: boolean;
+  created_at?: Date | string;
+  done?: boolean;
 }
 
+export class Todo implements Todo {
+  constructor(init?: TodoFormValues) {
+    Object.assign(this, init);
+  }
+}
 export class TodoFormValues {
-  id?: string = undefined;
-  user_id: string | undefined = undefined;
+  id?: number = undefined;
+  userId: number = -1;
   title: string = "";
-  created_at?: Date | string = new Date();
+  created_at: string | Date = new Date();
   done?: boolean = false;
 
   constructor(todo?: TodoFormValues) {
     if (todo) {
       this.id = todo.id;
-      this.user_id = todo.user_id;
+      this.userId = todo.userId;
       this.title = todo.title;
-      this.created_at = todo.created_at;
+      this.created_at = new Date();
       this.done = todo.done;
     }
   }

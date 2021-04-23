@@ -1,20 +1,26 @@
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
 import { UserFormValues } from "../../app/models/user";
 import { useStore } from "../../app/stores/store";
 
 const LoginForm = () => {
   const { userStore } = useStore();
   const [user, setUser] = useState<UserFormValues>({ email: "", password: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = () => {
+    console.log(isSubmitting);
+    setIsSubmitting(true);
+    console.log(isSubmitting);
     if (user.email === "" || user.password === "") {
       console.log("empty fields");
     } else {
       userStore.login(user);
-      //setUser({ email: "", password: "" });
+      setUser({ email: "", password: "" });
     }
+    setIsSubmitting(false);
+    console.log(isSubmitting);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,8 +63,22 @@ const LoginForm = () => {
             className="d-block mt-4 ml-auto mr-auto w-100 "
             variant="primary"
             onClick={handleSubmit}
+            disabled={isSubmitting}
           >
-            Submit
+            {isSubmitting ? (
+              <>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+                <span className="sr-only">Loading...</span>
+              </>
+            ) : (
+              <>Submit</>
+            )}
           </Button>
         </div>
       </Form>
