@@ -1,17 +1,13 @@
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
+import React from "react";
 import { Button, Col, Form } from "react-bootstrap";
 import { TodoFormValues } from "../../../app/models/todo";
 import { useStore } from "../../../app/stores/store";
 import * as Yup from "yup";
-import { ErrorMessage, Formik } from "formik";
+import { Formik } from "formik";
 
 const TodoInputForm = () => {
   const { userStore, todoStore } = useStore();
-  const [newTodo, setNewTodo] = useState<TodoFormValues>({
-    title: "",
-    userId: userStore.user.id,
-  });
 
   const validationSchema = Yup.object({
     title: Yup.string().required("Can't be empty"),
@@ -19,17 +15,18 @@ const TodoInputForm = () => {
 
   const handleFormSubmit = (values: TodoFormValues) => {
     todoStore.addTodo(values);
-    setNewTodo({
-      title: "",
-      userId: userStore.user.id,
-    });
   };
 
   return (
     <Formik
       validationSchema={validationSchema}
-      onSubmit={(values) => handleFormSubmit(values)}
-      initialValues={newTodo}
+      onSubmit={(values, { resetForm }) => {
+        handleFormSubmit(values);
+        resetForm();
+      }}
+      initialValues={
+        new TodoFormValues({ title: "", userId: userStore.user.id })
+      }
     >
       {({
         handleSubmit,
