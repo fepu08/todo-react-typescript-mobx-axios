@@ -63,7 +63,7 @@ export default class UserStore {
     const decodedToken: Token = jwt(token!);
     const userId = decodedToken.sub;
     try {
-      const user = await agent.Account.current(userId);
+      const user = await agent.Account.current(parseInt(userId));
       return user;
     } catch (err) {
       throw err;

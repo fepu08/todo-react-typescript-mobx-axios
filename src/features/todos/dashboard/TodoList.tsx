@@ -1,13 +1,13 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { useStore } from "../../../app/stores/store";
+import { Todo } from "../../../app/models/todo";
 
-const TodoList = () => {
-  const {
-    todoStore: { todos },
-  } = useStore();
+interface Props {
+  todos: Todo[];
+}
 
-  if (todos === []) return <h3>Please create a TODO first</h3>;
+const TodoList = ({ todos }: Props) => {
+  if (todos.length < 1) return <h3>Please create a TODO first</h3>;
   return (
     <ul>
       {todos.map((todo) => (

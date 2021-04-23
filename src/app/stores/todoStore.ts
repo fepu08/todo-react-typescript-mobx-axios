@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Todo, TodoFormValues } from "../models/todo";
-import { store } from "./store";
 
 export default class TodoStore {
   todos: Todo[] = [];
@@ -15,10 +14,10 @@ export default class TodoStore {
     this.todos = todos;
   }
 
-  loadTodos = async (userId: string) => {
+  loadTodos = async () => {
     this.loadingInitial = true;
     try {
-      const result = await agent.Todos.getByUser(userId);
+      const result = await agent.Todos.get();
       runInAction(() => {
         this.todos = result;
       });
@@ -29,10 +28,6 @@ export default class TodoStore {
         this.setLoadingInitial(false);
       });
     }
-  };
-
-  loadTodosOfCurrentUser = () => {
-    this.loadTodos(store.userStore.user!.id);
   };
 
   setLoadingInitial(state: boolean) {

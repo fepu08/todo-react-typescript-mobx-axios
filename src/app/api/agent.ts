@@ -64,7 +64,7 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
   get: <T>(url: string) => axios.get<T>(url).then(responseBody),
-  getById: <T>(url: string, id: string) =>
+  getById: <T>(url: string, id: number) =>
     axios.get<T>(url + "/" + id).then(responseBody),
   post: <T>(url: string, body: {}) =>
     axios.post<T>(url, body).then(responseBody),
@@ -73,15 +73,14 @@ const requests = {
 };
 
 const Account = {
-  current: (id: string) => requests.getById<User>("/users", id),
+  current: (id: number) => requests.getById<User>("/users", id),
   login: (user: UserFormValues) => requests.post<User>("/login", user),
   register: (user: UserFormValues) => requests.post<User>("/register", user),
 };
 
 const Todos = {
-  get: () => requests.get<Todo>("/todos"),
-  getByUser: (userId: string) =>
-    requests.get<Todo[]>(`/todos?user_id=${userId}`),
+  get: () => requests.get<Todo[]>("/todos"),
+  getById: (id: number) => requests.getById<Todo>("/todos", id),
   create: (todo: TodoFormValues) => requests.post("/todos", todo),
   edit: (todo: Todo) => requests.put<Todo>(`/todos/${todo.id}`, todo),
   delete: (id: string) => requests.delete<Todo>(`/todos/${id}`),

@@ -15,7 +15,7 @@ export class TodoFormValues {
   id?: number = undefined;
   userId: number = -1;
   title: string = "";
-  created_at: string | Date = new Date();
+  created_at?: string | Date = new Date();
   done?: boolean = false;
 
   constructor(todo?: TodoFormValues) {
