@@ -37,6 +37,8 @@ export default class TodoStore {
   addTodo = async (todo: TodoFormValues) => {
     try {
       await agent.Todos.create(new TodoFormValues(todo));
+      // I loading all of the todos again
+      // because the backend add the id to the new todo
       this.loadTodos();
     } catch (err) {
       console.log(err);
