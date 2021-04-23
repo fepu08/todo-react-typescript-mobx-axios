@@ -3,6 +3,9 @@ import React from "react";
 import { Todo } from "../../../app/models/todo";
 import { useStore } from "../../../app/stores/store";
 import LoadingInitial from "../../../app/layout/LoadingInitial";
+import TodoDone from "./TodoDone";
+import { Table } from "react-bootstrap";
+import TodoListItem from "./TodoListItem";
 
 interface Props {
   todos: Todo[];
@@ -14,19 +17,24 @@ const TodoList = ({ todos }: Props) => {
 
   if (loadingInitial) return <LoadingInitial />;
 
-  if (todos.length < 1 && !loadingInitial)
-    return (
-      <div className="d-flex flex-column justify-content-center align-items-center">
-        <i className="fas fa-trophy fa-10x" />
-        <h3>Everything is done</h3>
-      </div>
-    );
+  if (todos.length < 1 && !loadingInitial) return <TodoDone />;
+
   return (
-    <ul>
-      {todos.map((todo) => (
-        <li key={todo.id}>{todo.title}</li>
-      ))}
-    </ul>
+    <Table striped bordered hover>
+      <thead>
+        <th>#</th>
+        <th>Title</th>
+        <th>Created at</th>
+        <th>Done</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </thead>
+      <tbody>
+        {todos.map((todo) => (
+          <TodoListItem key={todo.id} todo={todo} />
+        ))}
+      </tbody>
+    </Table>
   );
 };
 
