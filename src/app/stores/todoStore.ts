@@ -36,7 +36,8 @@ export default class TodoStore {
 
   addTodo = async (todo: TodoFormValues) => {
     try {
-      await agent.Todos.create(todo);
+      await agent.Todos.create(new TodoFormValues(todo));
+      this.loadTodos();
     } catch (err) {
       console.log(err);
     }

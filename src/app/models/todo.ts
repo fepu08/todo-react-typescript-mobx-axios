@@ -23,8 +23,8 @@ export class TodoFormValues {
       this.id = todo.id;
       this.userId = todo.userId;
       this.title = todo.title;
-      this.created_at = new Date();
-      this.done = todo.done;
+      this.created_at = todo.created_at ?? new Date();
+      this.done = todo.done ?? false;
     }
   }
 }
