@@ -9,12 +9,13 @@ const TodoCommandCell = (props) => {
   let today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const validation = dataItem.title && dataItem.created_at && created >= today;
+  const validation = !!dataItem.title;
 
   return inEdit ? (
     <td className="k-command-cell">
       <button
         className="k-button k-grid-save-command"
+        style={{ backgroundColor: "#28a745", color: "white" }}
         disabled={!validation}
         onClick={() =>
           isNewItem ? props.add(dataItem) : props.update(dataItem)
@@ -40,7 +41,8 @@ const TodoCommandCell = (props) => {
         Edit
       </button>
       <button
-        className="k-button k-grid-remove-command"
+        style={{ backgroundColor: "red", color: "white" }}
+        className="k-button k-grid-remove-command "
         onClick={() => props.remove(dataItem)}
       >
         Remove
