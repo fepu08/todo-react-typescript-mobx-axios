@@ -94,6 +94,7 @@ const TodoList = () => {
 
   const cancel = (dataItem) => {
     const originalItem = todos.find((todo) => todo.id === dataItem.id);
+    console.log(originalItem);
     setTodos(
       todos.map((todo) =>
         todo.id === originalItem.id
@@ -144,23 +145,6 @@ const TodoList = () => {
         <Column width="100px" field="done" title="Done" editor="boolean" />
         <Column cell={CommandCell} width="200px" />
       </Grid>
-
-      {/*<Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Title</th>
-          <th>Created at</th>
-          <th>Done</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {todos.map((todo) => (
-          <TodoListItem key={todo.id} todo={todo} />
-        ))}
-      </tbody>
-        </Table>*/}
     </>
   );
 };

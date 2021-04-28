@@ -5,10 +5,17 @@ const TodoCommandCell = (props) => {
   const inEdit = dataItem[props.editField];
   const isNewItem = dataItem.id === undefined;
 
+  const created = new Date(dataItem.created_at);
+  let today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const validation = dataItem.title && dataItem.created_at && created >= today;
+
   return inEdit ? (
     <td className="k-command-cell">
       <button
         className="k-button k-grid-save-command"
+        disabled={!validation}
         onClick={() =>
           isNewItem ? props.add(dataItem) : props.update(dataItem)
         }
