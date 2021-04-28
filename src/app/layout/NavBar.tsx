@@ -19,6 +19,9 @@ const NavBar = () => {
             <Nav.Link as={NavLink} to="/" exact>
               Home
             </Nav.Link>
+            <Nav.Link as={NavLink} to="/todos" exact>
+              Todos
+            </Nav.Link>
           </div>
           <div className="d-lg-flex">
             {commonStore.token ? (

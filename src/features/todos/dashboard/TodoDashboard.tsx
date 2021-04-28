@@ -1,9 +1,17 @@
-// list todos
-// add todo button
+import { observer } from "mobx-react-lite";
 import React from "react";
+import TodoInputForm from "../form/TodoInputForm";
+import TodoList from "./TodoList";
 
 const TodoDashboard = () => {
-  return <div>Todos</div>;
+  return (
+    <>
+      <h1>Todos</h1>
+      <TodoInputForm />
+      <hr />
+      <TodoList />
+    </>
+  );
 };
 
-export default TodoDashboard;
+export default observer(TodoDashboard);

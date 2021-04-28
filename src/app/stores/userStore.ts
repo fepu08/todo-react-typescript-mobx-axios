@@ -49,12 +49,31 @@ export default class UserStore {
     }
   };
 
+  getUser = async () => {
+    if (store.commonStore.token)
+      try {
+        return await this.getUserFromToken(store.commonStore.token);
+      } catch (err) {
+        throw err;
+      }
+    else return null;
+  };
+
   getUserFromToken = async (token: string) => {
     const decodedToken: Token = jwt(token!);
     const userId = decodedToken.sub;
     try {
-      const user = await agent.Account.current(userId);
+      const user = await agent.Account.current(parseInt(userId));
       return user;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  setUserWithToken = async (token: string) => {
+    try {
+      const user = await this.getUserFromToken(token);
+      runInAction(() => (this.user = user));
     } catch (err) {
       throw err;
     }

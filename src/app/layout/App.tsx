@@ -1,29 +1,34 @@
 import React, { Fragment, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { Switch, Route } from "react-router-dom";
+import "@progress/kendo-theme-bootstrap/dist/all.css";
+import "../../style/App.css";
 import HomePage from "../../features/home/HomePage";
 import LoginForm from "../../features/users/LoginForm";
 import RegisterForm from "../../features/users/RegisterForm";
 import NavBar from "./NavBar";
-import "../../style/App.css";
 import TodoDashboard from "../../features/todos/dashboard/TodoDashboard";
 import { useStore } from "../stores/store";
 import PrivateRoute from "../layout/PrivateRoute";
+import LoadingComponent from "./LoadingComponent";
+import { observer } from "mobx-react-lite";
 
-function App() {
+const App = () => {
   const { commonStore, userStore } = useStore();
 
   useEffect(() => {
     if (commonStore.token) {
       userStore
-        .getUserFromToken(commonStore.token)
+        .setUserWithToken(commonStore.token)
         .finally(() => commonStore.setAppLoaded());
     } else {
       commonStore.setAppLoaded();
     }
   }, [commonStore, userStore]);
 
-  //if (!commonStore.appLoaded) return <LoadingComponent />;
+  if (!commonStore.appLoaded) {
+    return <LoadingComponent />;
+  }
 
   return (
     <Fragment>
@@ -38,6 +43,6 @@ function App() {
       </Container>
     </Fragment>
   );
-}
+};
 
-export default App;
+export default observer(App);

@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { history } from "../..";
 import { User, UserFormValues } from "../models/user";
+import { Todo, TodoFormValues } from "../models/todo";
 import { store } from "../stores/store";
 
 const sleep = (delay: number) => {
@@ -63,7 +64,7 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
   get: <T>(url: string) => axios.get<T>(url).then(responseBody),
-  getById: <T>(url: string, id: string) =>
+  getById: <T>(url: string, id: number) =>
     axios.get<T>(url + "/" + id).then(responseBody),
   post: <T>(url: string, body: {}) =>
     axios.post<T>(url, body).then(responseBody),
@@ -72,13 +73,22 @@ const requests = {
 };
 
 const Account = {
-  current: (id: string) => requests.getById<User>("/users", id),
+  current: (id: number) => requests.getById<User>("/users", id),
   login: (user: UserFormValues) => requests.post<User>("/login", user),
   register: (user: UserFormValues) => requests.post<User>("/register", user),
 };
 
+const Todos = {
+  get: () => requests.get<Todo[]>("/todos"),
+  getById: (id: number) => requests.getById<Todo>("/todos", id),
+  create: (todo: TodoFormValues) => requests.post("/todos", todo),
+  edit: (todo: Todo) => requests.put<Todo>(`/todos/${todo.id}`, todo),
+  delete: (id: number) => requests.delete<Todo>(`/todos/${id}`),
+};
+
 const agent = {
   Account,
+  Todos,
 };
 
 export default agent;
