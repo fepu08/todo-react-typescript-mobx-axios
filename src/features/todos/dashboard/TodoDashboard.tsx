@@ -1,23 +1,15 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
-import { useStore } from "../../../app/stores/store";
+import React from "react";
 import TodoInputForm from "../form/TodoInputForm";
 import TodoList from "./TodoList";
 
 const TodoDashboard = () => {
-  const { todoStore } = useStore();
-  const { todos, loadTodos } = todoStore;
-
-  useEffect(() => {
-    loadTodos();
-  }, [loadTodos]);
-
   return (
     <>
       <h1>Todos</h1>
       <TodoInputForm />
       <hr />
-      <TodoList todos={todos} />
+      <TodoList />
     </>
   );
 };

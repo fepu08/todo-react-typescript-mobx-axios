@@ -83,7 +83,7 @@ const Todos = {
   getById: (id: number) => requests.getById<Todo>("/todos", id),
   create: (todo: TodoFormValues) => requests.post("/todos", todo),
   edit: (todo: Todo) => requests.put<Todo>(`/todos/${todo.id}`, todo),
-  delete: (id: string) => requests.delete<Todo>(`/todos/${id}`),
+  delete: (id: number) => requests.delete<Todo>(`/todos/${id}`),
 };
 
 const agent = {

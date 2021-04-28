@@ -10,9 +10,7 @@ const LoginForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = () => {
-    console.log(isSubmitting);
     setIsSubmitting(true);
-    console.log(isSubmitting);
     if (user.email === "" || user.password === "") {
       console.log("empty fields");
     } else {
@@ -20,7 +18,6 @@ const LoginForm = () => {
       setUser({ email: "", password: "" });
     }
     setIsSubmitting(false);
-    console.log(isSubmitting);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

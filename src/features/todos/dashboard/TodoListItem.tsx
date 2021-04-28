@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Todo } from "../../../app/models/todo";
+import { useStore } from "../../../app/stores/store";
 
 interface Props {
   todo: Todo;
 }
 
-const checkOnClick = () => {
-  console.log("update");
-};
-
 const TodoListItem = ({ todo }: Props) => {
   const { id, title, created_at, done } = todo;
+  const { todoStore } = useStore();
+
+  const checkOnClick = useCallback(() => {
+    todoStore.editTodo({ ...todo, done: !done });
+  }, [todo, todoStore, done]);
+
   return (
     <tr>
       <td>{id}</td>
@@ -21,17 +24,15 @@ const TodoListItem = ({ todo }: Props) => {
         <Form.Check
           type="checkbox"
           id={"done"}
-          label={"done"}
-          onClick={checkOnClick}
+          onChange={checkOnClick}
+          checked={done}
         />
       </td>
       <td>
-        <Button variant="primary" className="text-white">
+        <Button variant="primary" className="text-white mr-1">
           <i className="fas fa-edit" />
         </Button>
-      </td>
-      <td>
-        <Button variant="danger">
+        <Button variant="danger" className="ml-1">
           <i className="fas fa-trash" />
         </Button>
       </td>

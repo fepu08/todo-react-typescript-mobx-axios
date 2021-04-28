@@ -10,9 +10,9 @@ export default class TodoStore {
     makeAutoObservable(this);
   }
 
-  setTodos(todos: Todo[] | [] = []) {
+  setTodos = (todos: Todo[] | [] = []) => {
     this.todos = todos;
-  }
+  };
 
   loadTodos = async () => {
     this.loadingInitial = true;
@@ -40,6 +40,29 @@ export default class TodoStore {
       // I loading all of the todos again
       // because the backend add the id to the new todo
       this.loadTodos();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  editTodo = async (todo: Todo) => {
+    try {
+      await agent.Todos.edit(todo);
+      runInAction(() => {
+        let index = this.todos.findIndex((item) => item.id === todo.id);
+        this.todos[index] = todo;
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  deleteTodo = async (id: number) => {
+    try {
+      await agent.Todos.delete(id);
+      runInAction(() => {
+        this.todos = this.todos.filter((todo) => todo.id !== id);
+      });
     } catch (err) {
       console.log(err);
     }
