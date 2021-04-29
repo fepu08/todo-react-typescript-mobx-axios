@@ -9,6 +9,7 @@ import { Token } from "../models/token";
 export default class UserStore {
   user: User | null = null;
   error: string | null;
+  loading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -19,15 +20,18 @@ export default class UserStore {
   }
 
   login = async (creds: UserFormValues) => {
+    this.loading = true;
     try {
       const res = await agent.Account.login(creds);
       store.commonStore.setToken(res.accessToken!);
       const user = await this.getUserFromToken(res.accessToken!);
       runInAction(() => {
-        runInAction(() => (this.user = user));
+        this.user = user;
+        this.loading = false;
       });
       history.push("/todos");
     } catch (err) {
+      this.loading = false;
       throw err;
     }
   };
@@ -40,14 +44,17 @@ export default class UserStore {
   };
 
   register = async (creds: UserFormValues) => {
+    this.loading = true;
     try {
       const res = await agent.Account.register(creds);
       runInAction(() => {
         const token = res.accessToken;
         store.commonStore.setToken(token!);
         this.error = null;
+        this.loading = false;
       });
     } catch (err) {
+      this.loading = false;
       this.error = err.response.data;
     }
   };

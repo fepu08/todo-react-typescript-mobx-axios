@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Button, Form, Alert } from "react-bootstrap";
+import { Button, Spinner, Form, Alert } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import { UserFormValues } from "../../app/models/user";
 import { useStore } from "../../app/stores/store";
@@ -92,6 +92,7 @@ const RegisterForm = () => {
                 </Form.Control.Feedback>
               </Form.Group>
 
+              {console.log(userStore.loading)}
               <Form.Group className="required">
                 <Form.Label>Username</Form.Label>
                 <Form.Control
@@ -184,7 +185,20 @@ const RegisterForm = () => {
                 type="submit"
                 disabled={!isValid || !dirty || isSubmitting}
               >
-                Submit
+                {userStore.loading ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                    <span className="sr-only">Loading...</span>
+                  </>
+                ) : (
+                  <span>Submit</span>
+                )}
               </Button>
             </div>
           </Form>
