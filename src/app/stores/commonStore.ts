@@ -37,11 +37,11 @@ export default class CommonStore {
   };
 
   isTokenExpired = (token: string) => {
-    let isExpired = false;
+    let isExpired = true;
     const decodedToken = jwt_decode(token) as Token;
     const dateNow = new Date();
 
-    if (decodedToken.exp < dateNow.getTime()) isExpired = true;
+    if (decodedToken.exp < dateNow.getTime()) isExpired = false;
 
     return isExpired;
   };

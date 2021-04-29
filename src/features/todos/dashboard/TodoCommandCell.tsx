@@ -5,10 +5,6 @@ const TodoCommandCell = (props) => {
   const inEdit = dataItem[props.editField];
   const isNewItem = dataItem.id === undefined;
 
-  const created = new Date(dataItem.created_at);
-  let today = new Date();
-  today.setHours(0, 0, 0, 0);
-
   const validation = !!dataItem.title;
 
   return inEdit ? (

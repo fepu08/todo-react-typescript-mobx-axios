@@ -18,7 +18,7 @@ const PrivateRoute = ({ component: Component, ...rest }: Props) => {
     <Route
       {...rest}
       render={(props) =>
-        isLoggedIn && isTokenExpired ? (
+        isLoggedIn || !isTokenExpired ? (
           <Component {...props} />
         ) : (
           <Redirect to="/login" />
