@@ -28,11 +28,12 @@ export default class UserStore {
       runInAction(() => {
         this.user = user;
         this.loading = false;
+        this.error = null;
       });
       history.push("/todos");
     } catch (err) {
       this.loading = false;
-      throw err;
+      this.error = err.response.data;
     }
   };
 

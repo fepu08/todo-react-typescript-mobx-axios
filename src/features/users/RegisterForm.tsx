@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Spinner, Form, Alert } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import { UserFormValues } from "../../app/models/user";
@@ -18,6 +18,8 @@ const RegisterForm = () => {
     passwordConfirm: "",
   };
 
+  useEffect(() => {}, [userStore.loading, userStore.error]);
+
   if (userStore.isLoggedIn) return <Redirect to={"/todos"} />;
 
   return (
@@ -25,7 +27,6 @@ const RegisterForm = () => {
       <h1 className="text-center mb- mb-5">
         <span className="text-primary">R</span>egister
       </h1>
-      {userStore.error && <Alert variant="danger">{userStore.error}</Alert>}
       <Formik
         initialValues={initValues}
         onSubmit={(values, { resetForm }) => {
@@ -75,6 +76,9 @@ const RegisterForm = () => {
             noValidate
           >
             <div className="card-body">
+              {userStore.error && (
+                <Alert variant="danger">{userStore.error}</Alert>
+              )}
               <Form.Group className="required">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
@@ -92,7 +96,6 @@ const RegisterForm = () => {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              {console.log(userStore.loading)}
               <Form.Group className="required">
                 <Form.Label>Username</Form.Label>
                 <Form.Control
