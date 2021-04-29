@@ -62,7 +62,7 @@ const LoginForm = () => {
               {userStore.error && (
                 <Alert variant="danger">{userStore.error}</Alert>
               )}
-              <Form.Group controlId="formBasicEmail">
+              <Form.Group className="required">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
                   type="email"
@@ -79,7 +79,7 @@ const LoginForm = () => {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="formBasicPassword">
+              <Form.Group className="required">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
                   type="password"
