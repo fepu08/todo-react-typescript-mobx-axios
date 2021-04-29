@@ -8,6 +8,7 @@ import { Token } from "../models/token";
 
 export default class UserStore {
   user: User | null = null;
+  error: string | null;
 
   constructor() {
     makeAutoObservable(this);
@@ -22,7 +23,9 @@ export default class UserStore {
       const res = await agent.Account.login(creds);
       store.commonStore.setToken(res.accessToken!);
       const user = await this.getUserFromToken(res.accessToken!);
-      runInAction(() => (this.user = user));
+      runInAction(() => {
+        runInAction(() => (this.user = user));
+      });
       history.push("/todos");
     } catch (err) {
       throw err;
@@ -39,13 +42,13 @@ export default class UserStore {
   register = async (creds: UserFormValues) => {
     try {
       const res = await agent.Account.register(creds);
-      const token = res.accessToken;
-      const user = await this.getUserFromToken(token!);
-      store.commonStore.setToken(token!);
-      runInAction(() => (this.user = user));
-      history.push("/todos");
+      runInAction(() => {
+        const token = res.accessToken;
+        store.commonStore.setToken(token!);
+        this.error = null;
+      });
     } catch (err) {
-      throw err;
+      this.error = err.response.data;
     }
   };
 

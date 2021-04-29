@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Alert } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
 import { UserFormValues } from "../../app/models/user";
 import { useStore } from "../../app/stores/store";
 import { Formik } from "formik";
@@ -17,20 +18,31 @@ const RegisterForm = () => {
     passwordConfirm: "",
   };
 
+  if (userStore.isLoggedIn) return <Redirect to={"/todos"} />;
+
   return (
     <div className="d-flex flex-column justify-content-center align-items-center mt-5">
       <h1 className="text-center mb- mb-5">
         <span className="text-primary">R</span>egister
       </h1>
+      {userStore.error && <Alert variant="danger">{userStore.error}</Alert>}
       <Formik
         initialValues={initValues}
-        onSubmit={(values) => {
+        onSubmit={(values, { resetForm }) => {
           userStore.register({
             email: values.email,
             username: values.username,
             firstName: values.firstName,
             lastName: values.lastName,
             password: values.password,
+          });
+          resetForm({
+            values: {
+              ...values,
+              email: "",
+              password: "",
+              passwordConfirm: "",
+            },
           });
         }}
         validationSchema={yup.object({
@@ -141,6 +153,7 @@ const RegisterForm = () => {
                   onChange={handleChange}
                   isValid={touched.password && !errors.password}
                   isInvalid={!!errors.password}
+                  autoComplete="on"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
@@ -158,6 +171,7 @@ const RegisterForm = () => {
                   onChange={handleChange}
                   isValid={touched.passwordConfirm && !errors.passwordConfirm}
                   isInvalid={!!errors.passwordConfirm}
+                  autoComplete="on"
                   required
                 />
                 <Form.Control.Feedback type="invalid">
