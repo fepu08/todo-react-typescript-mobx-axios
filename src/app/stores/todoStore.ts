@@ -5,6 +5,7 @@ import { Todo, TodoFormValues } from "../models/todo";
 export default class TodoStore {
   todos: Todo[] = [];
   loadingInitial = false;
+  loadingId: number | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -46,25 +47,31 @@ export default class TodoStore {
   };
 
   editTodo = async (todo: Todo) => {
+    this.loadingId = todo.id;
     try {
       await agent.Todos.edit(todo);
       runInAction(() => {
         let index = this.todos.findIndex((item) => item.id === todo.id);
         this.todos[index] = todo;
+        this.loadingId = null;
       });
     } catch (err) {
       console.log(err);
+      this.loadingId = null;
     }
   };
 
   deleteTodo = async (id: number) => {
+    this.loadingId = id;
     try {
       await agent.Todos.delete(id);
       runInAction(() => {
         this.todos = this.todos.filter((todo) => todo.id !== id);
+        this.loadingId = null;
       });
     } catch (err) {
       console.log(err);
+      this.loadingId = null;
     }
   };
 }

@@ -94,7 +94,6 @@ const TodoList = () => {
 
   const cancel = (dataItem) => {
     const originalItem = todos.find((todo) => todo.id === dataItem.id);
-    console.log(originalItem);
     setTodos(
       todos.map((todo) =>
         todo.id === originalItem.id
