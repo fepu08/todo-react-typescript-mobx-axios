@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect, RouteComponentProps } from "react-router";
 import { Route, RouteProps } from "react-router-dom";
 import { useStore } from "../stores/store";
+import { observer } from "mobx-react-lite"
 
 interface Props extends RouteProps {
   component:
@@ -28,4 +29,4 @@ const PrivateRoute = ({ component: Component, ...rest }: Props) => {
   );
 };
 
-export default PrivateRoute;
+export default observer(PrivateRoute);
